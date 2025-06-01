@@ -38,3 +38,30 @@ func (q *Queries) CreateSkillToMemberRating(ctx context.Context) error {
 	_, err := q.db.ExecContext(ctx, createSkillToMemberRating)
 	return err
 }
+
+const getSkills = `-- name: GetSkills :many
+SELECT id, name, created_at FROM skill
+`
+
+func (q *Queries) GetSkills(ctx context.Context) ([]Skill, error) {
+	rows, err := q.db.QueryContext(ctx, getSkills)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Skill
+	for rows.Next() {
+		var i Skill
+		if err := rows.Scan(&i.ID, &i.Name, &i.CreatedAt); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}

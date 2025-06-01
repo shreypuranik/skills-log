@@ -6,6 +6,9 @@ VALUES ($1);
 INSERT INTO skill (name) 
 VALUES ($1);
 
+-- name: GetSkills :many
+SELECT * FROM skill; 
+
 -- name: CreateSkillToMemberRating :exec
 INSERT INTO member_skill_rating (member_id, skill_id, rating) 
 VALUES ($1, $2, $3);
