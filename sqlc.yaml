@@ -1,0 +1,9 @@
+version: "2"
+sql:
+  - engine: "mysql"
+    queries: "resource/sql/queries.sql"
+    schema: "resource/sql/schema.sql"
+    gen:
+      go:
+        package: "skillslog"
+        out: "skillslog"
