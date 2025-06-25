@@ -1,0 +1,9 @@
+[
+  { "id": 1, "name": "Editing", "key": "editing" },
+  { "id": 2, "name": "Audio Mixing", "key": "audio_mixing" },
+  { "id": 3, "name": "Broadcasting", "key": "broadcasting" },
+  { "id": 4, "name": "Voice Over", "key": "voice_over" },
+  { "id": 5, "name": "Script Writing", "key": "script_writing" },
+  { "id": 39, "name": "Social Media Outreach", "key": "social_media_outreach" },
+  { "id": 40, "name": "Nonprofit Administration", "key": "nonprofit_administration" }
+]
