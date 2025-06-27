@@ -1,12 +1,15 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"html/template"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/go-sql-driver/mysql"
 )
 
 type Skill struct {
@@ -25,6 +28,8 @@ var funcs = template.FuncMap{
 		return []int{1, 2, 3, 4, 5}
 	},
 }
+
+var db *sql.DB
 
 func loadSkillsFromJSON(path string) ([]Skill, error) {
 	file, err := os.Open(path)
@@ -93,12 +98,32 @@ func formHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+
+	// Capture connection properties.
+	cfg := mysql.NewConfig()
+	cfg.User = "root"
+	cfg.Passwd = "root"
+	cfg.Net = "tcp"
+	cfg.Addr = "127.0.0.1:3306"
+	cfg.DBName = "skills_log"
+
+	// Get a database handle.
+	var err error
+	db, _ = sql.Open("mysql", cfg.FormatDSN())
+
+	pingErr := db.Ping()
+	if pingErr != nil {
+		log.Fatal(pingErr)
+	}
+	fmt.Println("Connected!")
+
 	http.HandleFunc("/", formHandler)
 
 	http.HandleFunc("/submit", submissionHandler)
 
 	log.Println("Server started at http://localhost:8080")
-	err := http.ListenAndServe(":8080", nil)
+
+	err = http.ListenAndServe(":8080", nil)
 	if err != nil {
 		log.Fatal("Server error:", err)
 	}
